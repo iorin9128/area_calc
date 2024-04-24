@@ -12,44 +12,6 @@ def load_cad_data_to_lines(area_name):
             lines.append(LineString([(float(l.split()[0]),float(l.split()[1])),(float(l.split()[2]),float(l.split()[3]))]))
     return lines
 
-def make_intersection_polygons_with_index(step,base_polygon_for_cal):
-    polygons_with_index = []
-    min_index_x = floor(base_polygon_for_cal.bounds[0]/step)
-    min_index_y = floor(base_polygon_for_cal.bounds[1]/step)
-    max_index_x = floor(base_polygon_for_cal.bounds[2]/step)
-    max_index_y = floor(base_polygon_for_cal.bounds[3]/step)
-    for x in range(min_index_x,max_index_x+1):
-        #print(x)
-        for y in range(min_index_y,max_index_y+1):
-            #print(y)
-            polygon_index =  Polygon([(x*step,y*step),(x*step+step,y*step),(x*step+step,y*step+step),(x*step,y*step+step),(x*step,y*step)])
-            intersection = base_polygon_for_cal.intersection(polygon_index)
-            polygons_with_index.append( [(x,y), polygon_index, intersection, intersection.area] )
-    return polygons_with_index
-
-def make_intersection_polygons_with_index_without_100(intersection_polygons_with_index):
-    result = []
-    for i in intersection_polygons_with_index:
-        if i[3] == 100.0:
-            continue
-        result += i
-    return result
-
-def make_liner_rings(intersection_polygons_with_index):
-    liner_rings = []
-    for i in intersection_polygons_with_index:
-        if i[2].geom_type == 'MultiPolygon':
-            for k in list(i[2].geoms):
-                temp = [i[0],list(k.exterior.coords)]
-                liner_rings.append(temp)
-        elif i[2].geom_type == 'Polygon':
-            temp = [i[0],list(i[2].exterior.coords)]
-            liner_rings.append(temp)
-        else:
-            print("bad")
-            break 
-    return liner_rings  
-
 class OutPutFile:
     def __init__(self,area_name):
         self.area_name = area_name
