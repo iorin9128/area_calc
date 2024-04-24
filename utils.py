@@ -30,6 +30,7 @@ class Mesh:
         self.index_x = index_x
         self.index_y = index_y
         self.base_polygon_for_cal = base_polygon_for_cal
+        self.point_mesh_center = (self.index_x*self.step + self.step/2, self.index_y*self.step + self.step/2)
     def intersection(self):
         mesh_polygon = Polygon([(self.index_x*self.step,self.index_y*self.step),
                                 (self.index_x*self.step+self.step,self.index_y*self.step),

@@ -19,7 +19,6 @@ def test_load_cad_data_to_lines():
     lines = load_cad_data_to_lines(area_name)
     assert list(lines[0].coords ) ==  [(84.2162740899358, 15.7311285589658), (34.5126338329765,46.3456895868031)]
     base_polygon_for_cal = polygonize(lines)
-    print(lines)
     assert base_polygon_for_cal.geom_type == "GeometryCollection"
     assert list(list(base_polygon_for_cal.geoms)[0].boundary.coords)[0] == (84.2162740899358,15.7311285589658)
-
+    assert list(base_polygon_for_cal.geoms)[0].geom_type == "Polygon"

@@ -14,8 +14,9 @@ base_polygon_for_cal = lines_to_polygon(lines)
 list_meshes_with_intersection = list_meshes_with_intersection(step, base_polygon_for_cal)
 list_mesh_for_inter_calc = list_intersection_for_calc(list_meshes_with_intersection)
 data_for_double_calculation = data_for_double_calculation(list_mesh_for_inter_calc)
-# print(data_for_double_calculation)
-# print(floor(base_polygon_for_cal.bounds[2]/step))
+
+a = Mesh(10,1,1,base_polygon_for_cal)
+print(a.point_mesh_center)
 
 # ワークブック初期化
 out_put_file = OutPutFile(area_name)
@@ -28,11 +29,10 @@ title_style = NamedStyle(name="title_style")
 title_style.alignment = Alignment(shrink_to_fit=True, horizontal="center")
 side = Side(border_style="thin",color='FF000000')
 border = Border(left=side, right=side,top=side,bottom=side)
-
 #　スタイル名をワークブックへ登録
 # wb.add_named_style(title_style)
 
-####################################
+# エクセルへデータ挿入
 row = 1
 ws.cell(row=row, column =1, value=area_name)
 
