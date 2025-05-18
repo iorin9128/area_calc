@@ -2,6 +2,7 @@ import re
 import shapely as sp
 import math
 import sys
+from typing import List, Tuple, Union
 
 def append_first_to_end_if_mismatched(lists_of_list):
     # テストケース作成済
@@ -11,7 +12,7 @@ def append_first_to_end_if_mismatched(lists_of_list):
         if lists[0] != lists[-1]:
             lists.append(lists[0])
 
-def parse_autocad_log_for_coordinates(file_path):
+def parse_autocad_log_for_coordinates(file_path) -> List[List[tuple]]:
     # テストケース作成済
     """オートキャドのログファイル(生ファイル)から 単純にX=... , Y=... から座標を抽出する
 

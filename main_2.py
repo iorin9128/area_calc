@@ -10,6 +10,7 @@ def process_autocad_log(log_file_path) -> Tuple[str, List[sp.Polygon], sp.Geomet
     """
     AutoCADのログファイルから座標を抽出し、ポリゴンリストとGeometryCollectionを作成する。
     """
+
     path_obj_file: str = Path(log_file_path) 
     base_file_name: str = path_obj_file.stem
 
@@ -40,7 +41,6 @@ def calculate_mesh_overlaps(polygon_list, collection, bounds_offset=10):
     csv_of_surveyor_method = []
     
     for check in check_MeshList_of_not_100_empty:
-        print(check)
         check: tuple[str, Union[sp.Polygon, sp.MultiPolygon, None], u1.MeshCell] 
         if check[0] != "None":
             if check[0] != "multipolygon":
