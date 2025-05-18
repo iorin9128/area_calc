@@ -4,7 +4,7 @@ from utils_1 import *
 import csv
 
 # オートキャドのログファイルから X,Y座標を抽出する
-line = parse_autocad_log_for_coordinates("./data/汀線.log")
+line = u1.parse_autocad_log_for_coordinates("./data/汀線.log")
 
 # X,Y座標からLineStringを作る
 linestring = create_linestring_from_xy_coords(line[0])

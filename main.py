@@ -12,7 +12,7 @@ base_file_name = path_obj_file.stem
 
 # autocad のログファイルから x,yの座標を抽出する
 # args: 配列の配列
-parsers = parse_autocad_log_for_coordinates(log_file_path)
+parsers = u1.parse_autocad_log_for_coordinates(log_file_path)
 
 # x,yの座標配列の最初と最後が違うならば、最初を最後に追加する
 append_first_to_end_if_mismatched(parsers)

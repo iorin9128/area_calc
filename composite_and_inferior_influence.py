@@ -3,11 +3,11 @@ from shapely import *
 
 # 影響範囲のポリゴンの x,y の座標の組を抽出する
 # [[[2,3],[5,5],[0,0]],[[5,5],[2,4],[5,9]]] のような配列の配列
-parsers = parse_autocad_log_for_coordinates("./data/影響範囲800m.log")
+parsers = u1.parse_autocad_log_for_coordinates("./data/影響範囲800m.log")
 
 # 影響の始まりの線分のログファイルから x,y 座標の組を抽出する
 # [[[2,3],[5,5],[0,0]],[[5,5],[2,4],[5,9]]] のような配列
-b_linestring = parse_autocad_log_for_coordinates("./data/新用地幅杭.log")
+b_linestring = u1.parse_autocad_log_for_coordinates("./data/新用地幅杭.log")
 
 # b_linestringの[0] を LineString にする
 linestring = LineString(b_linestring[0])

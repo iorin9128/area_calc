@@ -1,5 +1,5 @@
 import re
-from shapely import *
+import shapely as sp
 import math
 import sys
 
@@ -76,7 +76,7 @@ def create_linestring_from_xy_coords(xy):
     validated_coords = []
     for point in xy:
         validated_coords.append(tuple(point))
-    return LineString(validated_coords)
+    return sp.LineString(validated_coords)
     
 
 
@@ -90,8 +90,8 @@ def create_polygon_from_xy_coords(xy):
     b = []
     a = [list(p) for p in zip(xy, xy[1:])]
     for i in a:
-        b.append(LineString(i))
-    geomss = polygonize(b)
+        b.append(sp.LineString(i))
+    geomss = sp.polygonize(b)
     return list(geomss.geoms)[0]
 
 def merge_geometry_collections(collections):
@@ -101,7 +101,7 @@ def merge_geometry_collections(collections):
     for i in collections:
         all_geometries = all_geometries + list(i.geoms)
 
-    merged_gc = GeometryCollection(all_geometries)
+    merged_gc = sp.GeometryCollection(all_geometries)
     return merged_gc
 
 def get_calculation_area(bounds_tuples, step):
@@ -158,7 +158,7 @@ def create_10m_mesh_polygons(caluculatin_area):
 
             # Shapely Polygonオブジェクトを作成
             # 頂点のリスト (またはタプル) を渡す
-            polygon = Polygon([bottom_left, bottom_right, top_right, top_left])
+            polygon = sp.Polygon([bottom_left, bottom_right, top_right, top_left])
             polygons.append(polygon)
 
     return polygons

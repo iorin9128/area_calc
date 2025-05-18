@@ -1,22 +1,23 @@
-from utils_1 import *
-from surveyor_method import *
-from shapely import *
+import utils_1 as u1
+import surveyor_method as sm
+import shapely as sp  
 from pathlib import Path
 import openpyxl
 from openpyxl.styles import Border, Side
+from typing import List, Tuple, Union
 
-def process_autocad_log(log_file_path):
+def process_autocad_log(log_file_path) -> Tuple[str, List[sp.Polygon], sp.GeometryCollection]:
     """
     AutoCADのログファイルから座標を抽出し、ポリゴンリストとGeometryCollectionを作成する。
     """
-    path_obj_file = Path(log_file_path)
-    base_file_name = path_obj_file.stem
+    path_obj_file: str = Path(log_file_path) 
+    base_file_name: str = path_obj_file.stem
 
-    parsers = u1.parse_autocad_log_for_coordinates(log_file_path)
-    append_first_to_end_if_mismatched(parsers)
+    parsers: List[List[Tuple[float, float]]] = u1.parse_autocad_log_for_coordinates(log_file_path)
+    u1.append_first_to_end_if_mismatched(parsers)
 
-    polygon_list = [create_polygon_from_xy_coords(l) for l in parsers]
-    collection = GeometryCollection(polygon_list)
+    polygon_list: List[sp.Polygon] = [u1.create_polygon_from_xy_coords(l) for l in parsers]
+    collection = sp.GeometryCollection(polygon_list)
 
     return base_file_name, polygon_list, collection
 
@@ -24,10 +25,10 @@ def calculate_mesh_overlaps(polygon_list, collection, bounds_offset=10):
     """
     ポリゴンとメッシュの重複を計算し、関連データを整理する。
     """
-    collection :GeometryCollection = collection
-    caluculatin_area = get_calculation_area(collection.bounds, bounds_offset)
-    grid_aria = GridArea(caluculatin_area)
-    check_MeshList = check_MeshList_polygon_overlap(grid_aria.mesh_list, polygon_list)
+    collection :sp.GeometryCollection = collection
+    caluculatin_area = u1.get_calculation_area(collection.bounds, bounds_offset)
+    grid_aria = u1.GridArea(caluculatin_area)
+    check_MeshList = u1.check_MeshList_polygon_overlap(grid_aria.mesh_list, polygon_list)
 
     check_MeshList_of_not_100_empty = [
         item for item in check_MeshList if item[0] == "partial_overlap" or item[0] == "multipolygon"
@@ -39,16 +40,16 @@ def calculate_mesh_overlaps(polygon_list, collection, bounds_offset=10):
     csv_of_surveyor_method = []
     
     for check in check_MeshList_of_not_100_empty:
-        check: tuple[str, any, MeshCell]
         print(check)
+        check: tuple[str, Union[sp.Polygon, sp.MultiPolygon, None], u1.MeshCell] 
         if check[0] != "None":
             if check[0] != "multipolygon":
                 csv_of_surveyor_method.append([check[2].index,
-                                calculate_polygon_area_surveyor_method(check[1])])
+                                sm.calculate_polygon_area_surveyor_method(check[1])])
             elif check[0] == "multipolygon":
                 for i in check[1].geoms:
                     csv_of_surveyor_method.append([check[2].index,
-                                calculate_polygon_area_surveyor_method(i)])
+                                sm.calculate_polygon_area_surveyor_method(i)])
 
     csv_of_main_list = [[sub_list[0], sub_list[1]["area"]] for sub_list in csv_of_surveyor_method]
     for i in check_MeshList_of_all_ovelap:
@@ -162,7 +163,7 @@ def main():
     """
     メイン処理を実行する関数。
     """
-    log_file_path = "./test/autocad_log_9.log"
+    log_file_path = "./test/10mメッシュに複数のポリゴンがあるテスト用.log"
     template_excel_filename = "./output/様式_操業面積.xlsx"
     output_excel_filename_template = "./output/{base_file_name}.xlsx" # テンプレート文字列を使用
 

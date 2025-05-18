@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
     # autocad のログファイルから x,yの座標を抽出する
     # args: 配列の配列
-    parsers = parse_autocad_log_for_coordinates(log_file_path)
+    parsers = u1.parse_autocad_log_for_coordinates(log_file_path)
     if len(parsers) != 2:
         sys.exit(1)
 
